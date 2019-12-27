@@ -29,9 +29,9 @@ const main = () => {
     window.addEventListener("resize", resize)
     document.body.appendChild(app.view)
 
-    app.loader.add("animal_dance.png")
+    app.loader.add("resources/animal_dance.png")
         .load(() => {
-            const animals = new PIXI.Sprite(app.loader.resources["animal_dance.png"].texture)
+            const animals = new PIXI.Sprite(app.loader.resources["resources/animal_dance.png"].texture)
             animals.interactive = true
             animals.scale.set(200 / animals.width)
             animals.position.set(gameWidth / 2, gameHeight / 2)

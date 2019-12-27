@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cp -r resources dist && parcel index.html"
+    "start": "cp -r resources dist && parcel index.html "
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "parcel": "^1.12.4",
+    "parcel-bundler": "^1.12.4",
     "pixi.js": "^5.2.0",
     "typescript": "^3.7.4"
   }
