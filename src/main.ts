@@ -5,19 +5,42 @@ import { gameHeight, gameWidth } from './settings'
 const main = () => {
     
     const app = new PIXI.Application({
-        width: 1200,
-        height: 900,
-        backgroundColor: 0x00000,
+        width: gameWidth,
+        height: gameHeight,
+        backgroundColor: 0xFFFFFF,
         resolution: window.devicePixelRatio,
     })
-    app.renderer.view.style.position = "absolute"
+    
+    console.log(app.renderer.resolution)
+
+    app.renderer.view.id = "pixi-canvas"
+    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+
     const resize = () => {
-        const ratio = Math.min(window.innerWidth / gameWidth,
-            window.innerHeight / gameHeight)
-        app.renderer.resize(Math.ceil(gameWidth * ratio), Math.ceil(gameHeight * ratio))
+
+        console.log(app.renderer.resolution)
+        console.log(window.innerWidth)
+        console.log(window.innerHeight)
+        console.log(screen.width)
+        console.log(screen.height)
+
+        const p = app.view.parentElement
+        const ratio = Math.min(
+            p.clientWidth / gameWidth,
+            p.clientHeight  / gameHeight
+        )
+
+        const newWidth = Math.ceil(gameWidth * ratio)
+        const newHeight = Math.ceil(gameHeight * ratio)
+        console.log(newWidth)
+        console.log(newHeight)
+
+        app.view.style.width = `${newWidth}px`
+        app.view.style.height = `${newHeight}px`
+
+        app.renderer.resize(newWidth, newHeight)
         app.stage.scale.set(ratio)
-        console.log("window:   w h", window.innerWidth, window.innerHeight)
-        console.log("renderer: w h", app.renderer.width, app.renderer.height)
+
         // if (window.innerWidth / gameWidth < window.innerHeight / gameHeight) {
         //     app.renderer.view.style.top = `${(window.innerHeight - app.renderer.height) / 2}px`
         //     app.renderer.view.style.left = "0px"
@@ -27,13 +50,14 @@ const main = () => {
         // }
     }
     document.body.appendChild(app.view)
-    window.addEventListener("resize", resize)
-    resize()
+    window.addEventListener("resize", resize, false)
+        resize()
+    app.stage.addChild(new PIXI.Graphics().beginFill(0x00ff00).drawCircle(app.screen.width, app.screen.height, 50))
 
     app.loader.add("resources/animal_dance.png")
-        .load(() => {
+        .load((_, resources) => {
             const sceneManager = new SceneManager(app.stage, {
-                resources: app.loader.resources
+                resources,
             })
             let frameCount = 0
             app.ticker.add((deltaTimeMS: number) => {

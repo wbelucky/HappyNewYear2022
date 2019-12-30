@@ -1,7 +1,7 @@
 import { GameScene } from "./game_scene"
 import { Scene } from "./scene"
 import { FrameInfo } from "./scene"
-import { SceneProps } from "../scene"
+import { SceneProps } from "./scene"
 
 export class SceneManager {
     private nowScene: Scene
@@ -20,6 +20,7 @@ export class SceneManager {
                     c.destroy()
                 }
             })
+            
             this.stage.removeChildren()
             this.nowScene = new next(this.props)
             this.stage.addChild(this.nowScene)
