@@ -18,13 +18,8 @@ const main = () => {
 
     const resize = () => {
 
-        console.log(app.renderer.resolution)
-        console.log(window.innerWidth)
-        console.log(window.innerHeight)
-        console.log(screen.width)
-        console.log(screen.height)
-
         const p = app.view.parentElement
+
         const ratio = Math.min(
             p.clientWidth / gameWidth,
             p.clientHeight  / gameHeight
@@ -32,8 +27,6 @@ const main = () => {
 
         const newWidth = Math.ceil(gameWidth * ratio)
         const newHeight = Math.ceil(gameHeight * ratio)
-        console.log(newWidth)
-        console.log(newHeight)
 
         app.view.style.width = `${newWidth}px`
         app.view.style.height = `${newHeight}px`
@@ -41,18 +34,19 @@ const main = () => {
         app.renderer.resize(newWidth, newHeight)
         app.stage.scale.set(ratio)
 
-        // if (window.innerWidth / gameWidth < window.innerHeight / gameHeight) {
-        //     app.renderer.view.style.top = `${(window.innerHeight - app.renderer.height) / 2}px`
-        //     app.renderer.view.style.left = "0px"
-        // } else {
-        //     app.renderer.view.style.left = `${(window.innerWidth - app.renderer.width) / 2}px`
-        //     app.renderer.view.style.top = "0px"
-        // }
+        if (p.clientWidth / gameWidth < p.clientHeight / gameHeight) {
+            app.view.style.top = `${(p.clientHeight - app.renderer.height) / 2}px`
+            console.log(p.style.top)
+            p.style.left = "0px"
+        } else {
+            app.view.style.left = `${(p.clientWidth - app.renderer.width) / 2}px`
+            console.log(p.style.left)
+            p.style.top = "0px"
+        }
     }
-    document.body.appendChild(app.view)
+    document.getElementById("game").appendChild(app.view)
     window.addEventListener("resize", resize, false)
         resize()
-    app.stage.addChild(new PIXI.Graphics().beginFill(0x00ff00).drawCircle(app.screen.width, app.screen.height, 50))
 
     app.loader.add("resources/animal_dance.png")
         .load((_, resources) => {
