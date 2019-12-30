@@ -18,11 +18,13 @@ const main = () => {
 
     const resize = () => {
 
-        const p = app.view.parentElement
+        // const p = app.view.parentElement
+        console.log(innerWidth)
+        console.log(innerHeight)
 
         const ratio = Math.min(
-            p.clientWidth / gameWidth,
-            p.clientHeight  / gameHeight
+            window.innerWidth / gameWidth,
+            window.innerHeight/ gameHeight
         )
 
         const newWidth = Math.ceil(gameWidth * ratio)
@@ -34,14 +36,12 @@ const main = () => {
         app.renderer.resize(newWidth, newHeight)
         app.stage.scale.set(ratio)
 
-        if (p.clientWidth / gameWidth < p.clientHeight / gameHeight) {
-            app.view.style.top = `${(p.clientHeight - app.renderer.height) / 2}px`
-            console.log(p.style.top)
-            p.style.left = "0px"
+        if (window.innerWidth / gameWidth < window.innerHeight / gameHeight) {
+            app.view.style.top = `${(window.innerHeight - app.renderer.height) / 2}px`
+            app.view.style.left = "0px"
         } else {
-            app.view.style.left = `${(p.clientWidth - app.renderer.width) / 2}px`
-            console.log(p.style.left)
-            p.style.top = "0px"
+            app.view.style.left = `${(window.innerWidth - app.renderer.width) / 2}px`
+            app.view.style.top = "0px"
         }
     }
     document.getElementById("game").appendChild(app.view)
