@@ -43350,6 +43350,8 @@ var scene_1 = require("./scene");
 
 var settings_1 = require("./settings");
 
+var title_scene_1 = require("./title_scene");
+
 var GameScene =
 /** @class */
 function (_super) {
@@ -43358,6 +43360,7 @@ function (_super) {
   function GameScene(props) {
     var _this = _super.call(this, props) || this;
 
+    _this.props = props;
     _this.nextScene = null;
     _this.state = "rotate";
     _this.animals = new PIXI.Sprite(props.resources["resources/animal_dance.png"].texture);
@@ -43365,23 +43368,48 @@ function (_super) {
 
     _this.animals.scale.set(200 / _this.animals.width);
 
-    _this.animals.position.set(0, 0);
+    _this.animals.position.set(settings_1.gameWidth / 2, settings_1.gameHeight / 2);
 
     _this.animals.anchor.set(0.5);
 
     _this.animals.on("pointerdown", function () {
+      _this.props.achivement.gameClear = true;
+      alert('[実績解除] ゲームクリアだ やったねー');
       _this.state = "move_up";
     });
 
-    var g = new PIXI.Graphics();
-    g.beginFill(0xff0000);
-    g.drawCircle(settings_1.gameWidth / 3, settings_1.gameHeight / 3, 100);
-    g.drawCircle(settings_1.gameWidth / 2, settings_1.gameHeight / 2, 100);
-    g.drawCircle(3 * settings_1.gameWidth / 4, 3 * settings_1.gameHeight / 4, 100);
-
     _this.addChild(_this.animals);
 
-    _this.addChild(g);
+    var mijissou = new PIXI.Text('これが, みじっそうってやつですね...', new PIXI.TextStyle({
+      fontFamily: 'Nico Moji',
+      fontSize: 40
+    }));
+    mijissou.anchor.set(0.5);
+    mijissou.position.set(settings_1.gameWidth / 2, settings_1.gameHeight / 3);
+
+    _this.addChild(mijissou);
+
+    var hint = new PIXI.Text('たいとるがめんのちーずとねこをつかってねずみを......すると...?', new PIXI.TextStyle({
+      fontFamily: 'Nico Moji',
+      fontSize: 15
+    }));
+    hint.anchor.set(0.5, 1);
+    hint.position.set(settings_1.gameWidth / 2, settings_1.gameHeight);
+
+    _this.addChild(hint);
+
+    var back = new PIXI.Text('もどる', new PIXI.TextStyle({
+      fontFamily: 'Nico Moji',
+      fontSize: 40
+    }));
+    back.anchor.set(0.5);
+    back.position.set(settings_1.gameWidth / 2, settings_1.gameHeight * 2 / 3);
+    back.interactive = true;
+    back.on('pointertap', function () {
+      _this.nextScene = title_scene_1.TitleScene;
+    });
+
+    _this.addChild(back);
 
     return _this;
   }
@@ -43403,6 +43431,101 @@ function (_super) {
 }(scene_1.Scene);
 
 exports.GameScene = GameScene;
+},{"pixi.js":"../node_modules/pixi.js/lib/pixi.es.js","./scene":"scene.ts","./settings":"settings.ts","./title_scene":"title_scene.ts"}],"clear_scene.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+  }
+  result["default"] = mod;
+  return result;
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var PIXI = __importStar(require("pixi.js"));
+
+var scene_1 = require("./scene");
+
+var settings_1 = require("./settings");
+
+var ClearScene =
+/** @class */
+function (_super) {
+  __extends(ClearScene, _super);
+
+  function ClearScene(props) {
+    var _this = _super.call(this, props) || this;
+
+    _this.nextScene = null;
+    var clear = new PIXI.Text('すべてのあちーぶめんとをたっせいしました!!\nみつけてくれてありがとう!!🏆', new PIXI.TextStyle({
+      fontFamily: 'Nico Moji',
+      fontSize: 60
+    }));
+    clear.anchor.set(0.5);
+    clear.position.set(settings_1.gameWidth / 2, settings_1.gameHeight / 3);
+
+    _this.addChild(clear);
+
+    var tweet = new PIXI.Text('ついーとする', new PIXI.TextStyle({
+      fontFamily: 'Nico Moji',
+      fontSize: 40
+    }));
+    tweet.interactive = true;
+    tweet.on('pointertap', function () {
+      var baseUrl = 'https://twitter.com/intent/tweet?';
+      var text = ['text', '年賀状2019ですべてのアチーブメントを達成しました!\n'];
+      var hashtags = ['hashtags', ['インターネット年賀状'].join(',')];
+      var url = ['url', location.href];
+      var query = new URLSearchParams([text, hashtags, url]).toString();
+      var shareUrl = "" + baseUrl + query;
+      window.open(shareUrl, '_blank');
+    });
+    tweet.anchor.set(0.5);
+    tweet.position.set(settings_1.gameWidth / 2, settings_1.gameHeight * 2 / 3);
+
+    _this.addChild(tweet);
+
+    return _this;
+  }
+
+  ClearScene.prototype.update = function () {};
+
+  return ClearScene;
+}(scene_1.Scene);
+
+exports.ClearScene = ClearScene;
 },{"pixi.js":"../node_modules/pixi.js/lib/pixi.es.js","./scene":"scene.ts","./settings":"settings.ts"}],"title_scene.ts":[function(require,module,exports) {
 "use strict";
 
@@ -43453,6 +43576,8 @@ var scene_1 = require("./scene");
 var settings_1 = require("./settings");
 
 var game_scene_1 = require("./game_scene");
+
+var clear_scene_1 = require("./clear_scene");
 
 ;
 
@@ -43533,21 +43658,10 @@ function (_super) {
       spr.direction = Math.random() * 2 * Math.PI;
       return spr;
     });
-    _this.graph = new PIXI.Graphics().beginFill(0xff0000).drawCircle(settings_1.gameWidth / 4, settings_1.gameHeight / 2, 50).endFill(); // 忘れがち.
-
-    _this.graph.interactive = true;
-
-    _this.graph.on("pointerdown", function () {
-      document.body.removeEventListener('pointerdown', modeSwitch);
-      _this.nextScene = game_scene_1.GameScene;
-    }); // this.addChild(this.graph)
-
-
-    var style = new PIXI.TextStyle({
+    var text = new PIXI.Text('あけまして  \n おめでとう \n  ございます', new PIXI.TextStyle({
       fontFamily: "Nico Moji",
       fontSize: 80
-    });
-    var text = new PIXI.Text('あけまして  \n おめでとう \n  ございます', style);
+    }));
     text.anchor.set(0.5, 0.5);
     text.position.set(settings_1.gameWidth / 3, settings_1.gameHeight / 2);
 
@@ -43571,10 +43685,33 @@ function (_super) {
 
     _this.addChild(text3);
 
+    _this.achivements = new PIXI.Text(_this.getAchivementText(), new PIXI.TextStyle({
+      fontFamily: "Nico Moji",
+      fontSize: 15
+    }));
+
+    _this.addChild(_this.achivements);
+
+    var toGame = new PIXI.Sprite(_this.props.resources['resources/game_controller.png'].texture);
+    toGame.anchor.set(0.5);
+    toGame.scale.set(0.4);
+    toGame.alpha = 0.5;
+    toGame.position.set(settings_1.gameWidth / 2, settings_1.gameHeight * 3 / 4);
+    toGame.interactive = true;
+    toGame.on('pointertap', function () {
+      document.body.removeEventListener('pointerdown', modeSwitch);
+      _this.nextScene = game_scene_1.GameScene;
+    });
+
+    _this.addChild(toGame);
+
     var icon = new PIXI.Sprite(_this.props.resources["resources/profile.png"].texture);
     icon.interactive = true;
     icon.on('pointerdown', function () {
       window.open('https://twitter.com/biraki_prg', '_blank');
+      _this.props.achivement.twitter = true;
+      _this.achivements.text = _this.getAchivementText();
+      alert('[実績解除] twitterアイコンを押しました.\n今年もよろしくなぁ');
     });
     icon.anchor.set(0.5);
     icon.position.set(3 * settings_1.gameWidth / 4, settings_1.gameHeight / 2);
@@ -43636,6 +43773,7 @@ function (_super) {
     if (gather_all && !this.props.achivement.gatherAll) {
       alert("[実績解放]タイトル画面のすべてのネズミを集めました\n今年も良いお年になりますように!!");
       this.props.achivement.gatherAll = true;
+      this.achivements.text = this.getAchivementText();
     }
 
     var exclude_all = this.particles.every(function (spr) {
@@ -43645,14 +43783,27 @@ function (_super) {
     if (exclude_all && !this.props.achivement.excludeAll) {
       alert("[実績解放]タイトル画面のすべてのネズミを画面外へ追い出しました\nことよろやで~~");
       this.props.achivement.excludeAll = true;
+      this.achivements.text = this.getAchivementText();
     }
+
+    if (Object.values(this.props.achivement).every(function (b) {
+      return b;
+    })) {
+      this.nextScene = clear_scene_1.ClearScene;
+    }
+  };
+
+  TitleScene.prototype.getAchivementText = function () {
+    return "あちーぶめんと:" + Object.values(this.props.achivement).map(function (b) {
+      return b ? '🏆' : '🕳';
+    }).join("");
   };
 
   return TitleScene;
 }(scene_1.Scene);
 
 exports.TitleScene = TitleScene;
-},{"pixi.js":"../node_modules/pixi.js/lib/pixi.es.js","./scene":"scene.ts","./settings":"settings.ts","./game_scene":"game_scene.ts"}],"scene_manager.ts":[function(require,module,exports) {
+},{"pixi.js":"../node_modules/pixi.js/lib/pixi.es.js","./scene":"scene.ts","./settings":"settings.ts","./game_scene":"game_scene.ts","./clear_scene":"clear_scene.ts"}],"scene_manager.ts":[function(require,module,exports) {
 "use strict";
 
 var __importStar = this && this.__importStar || function (mod) {
@@ -43765,12 +43916,14 @@ var main = function main() {
   document.getElementById("game").appendChild(app.view);
   window.addEventListener("resize", resize, false);
   resize();
-  app.loader.add(["resources/animal_dance.png", "resources/animalface_nezumi.png", 'resources/kunsei_cheese.png', 'resources/cat_boss_gang.png', 'resources/profile.png']).load(function (_, resources) {
+  app.loader.add(["resources/animal_dance.png", "resources/animalface_nezumi.png", 'resources/kunsei_cheese.png', 'resources/cat_boss_gang.png', 'resources/profile.png', 'resources/game_controller.png']).load(function (_, resources) {
     var sceneManager = new scene_manager_1.SceneManager(app.stage, {
       resources: resources,
       achivement: {
         excludeAll: false,
-        gatherAll: false
+        gatherAll: false,
+        twitter: false,
+        gameClear: false
       }
     });
     var frameCount = 0;
@@ -43832,7 +43985,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37275" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36423" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -11,7 +11,9 @@ export interface SceneProps {
     readonly resources: PIXI.IResourceDictionary
     achivement: {
         excludeAll: boolean;
-        gatherAll: boolean
+        gatherAll: boolean;
+        twitter: boolean;
+        gameClear: boolean
     }
 }
 

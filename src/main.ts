@@ -53,7 +53,8 @@ const main = () => {
             "resources/animalface_nezumi.png",
             'resources/kunsei_cheese.png',
             'resources/cat_boss_gang.png',
-            'resources/profile.png'
+            'resources/profile.png',
+            'resources/game_controller.png'
         ])
         .load((_, resources) => {
             const sceneManager = new SceneManager(app.stage, {
@@ -61,6 +62,8 @@ const main = () => {
                 achivement: {
                     excludeAll: false,
                     gatherAll: false,
+                    twitter: false,
+                    gameClear: false
                 }
             })
             let frameCount = 0

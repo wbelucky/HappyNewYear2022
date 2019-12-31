@@ -2,18 +2,19 @@ import * as PIXI from 'pixi.js'
 import { Scene, ImplementedScene, SceneProps, FrameInfo } from "./scene";
 import { gameWidth, gameHeight } from "./settings";
 import { GameScene } from "./game_scene";
+import { ClearScene } from './clear_scene';
 
 interface OptionParams {direction: number; };
 
 export class TitleScene extends Scene {
     
     public nextScene: ImplementedScene | null = null;
-    private graph: PIXI.Graphics
     private particleContainer: PIXI.ParticleContainer
     private particles: Array<PIXI.Sprite &  OptionParams>
     private pointerPosition: PIXI.IPoint | null = null
     private pointerMode: 'cat' | 'cheeze' = 'cat'
     private pointer: PIXI.Sprite
+    private achivements: PIXI.Text
     constructor(private props: SceneProps) {
         super(props)
 
@@ -71,23 +72,11 @@ export class TitleScene extends Scene {
             (spr as any).direction = Math.random() * 2 * Math.PI;
             return (spr as PIXI.Sprite & OptionParams)
         })
-        this.graph = new PIXI.Graphics()
-            .beginFill(0xff0000)
-            .drawCircle(gameWidth / 4, gameHeight / 2, 50)
-            .endFill()
-        // 忘れがち.
-        this.graph.interactive = true
-        this.graph.on("pointerdown", () => {
-            document.body.removeEventListener('pointerdown', modeSwitch)
-            this.nextScene = GameScene
-        })
-        // this.addChild(this.graph)
 
-        const style = new PIXI.TextStyle({
+        const text = new PIXI.Text('あけまして  \n おめでとう \n  ございます', new PIXI.TextStyle({
             fontFamily: "Nico Moji",
             fontSize: 80
-        })
-        const text = new PIXI.Text('あけまして  \n おめでとう \n  ございます', style)
+        }))
         text.anchor.set(0.5, 0.5)
         text.position.set(gameWidth / 3, gameHeight / 2)
         this.addChild(text)
@@ -99,6 +88,7 @@ export class TitleScene extends Scene {
         text2.anchor.set(0.5, 1)
         text2.position.set(gameWidth / 2, gameHeight * 7 / 8)
         this.addChild(text2)
+
         const text3 = new PIXI.Text('がめんをタッチしてみて...', new PIXI.TextStyle({
             fontFamily: "Nico Moji",
             fontSize: 15
@@ -107,10 +97,32 @@ export class TitleScene extends Scene {
         text3.position.set(gameWidth / 2, gameHeight)
         this.addChild(text3)
 
+        this.achivements = new PIXI.Text(this.getAchivementText(), new PIXI.TextStyle({
+            fontFamily: "Nico Moji",
+            fontSize: 15
+        }))
+        this.addChild(this.achivements)
+
+        const toGame = new PIXI.Sprite(this.props.resources['resources/game_controller.png'].texture)
+        toGame.anchor.set(0.5)
+        toGame.scale.set(0.4)
+        toGame.alpha = 0.5
+        toGame.position.set(gameWidth / 2, gameHeight * 3 / 4)
+        toGame.interactive = true
+        toGame.on('pointertap', () => {
+            document.body.removeEventListener('pointerdown', modeSwitch)
+            this.nextScene = GameScene
+        })
+        this.addChild(toGame)
+            
+
         const icon = new PIXI.Sprite(this.props.resources["resources/profile.png"].texture)
         icon.interactive = true
         icon.on('pointerdown', () => {
             window.open('https://twitter.com/biraki_prg', '_blank')
+            this.props.achivement.twitter = true
+            this.achivements.text = this.getAchivementText()
+            alert('[実績解除] twitterアイコンを押しました.\n今年もよろしくなぁ')
         })
         icon.anchor.set(0.5)
         icon.position.set(3 * gameWidth / 4, gameHeight / 2)
@@ -158,6 +170,7 @@ export class TitleScene extends Scene {
         if (gather_all && !this.props.achivement.gatherAll) {
             alert("[実績解放]タイトル画面のすべてのネズミを集めました\n今年も良いお年になりますように!!")
             this.props.achivement.gatherAll = true
+            this.achivements.text = this.getAchivementText()
         }
 
         const exclude_all = this.particles.every((spr) => {
@@ -166,6 +179,15 @@ export class TitleScene extends Scene {
         if (exclude_all && !this.props.achivement.excludeAll) {
             alert("[実績解放]タイトル画面のすべてのネズミを画面外へ追い出しました\nことよろやで~~")
             this.props.achivement.excludeAll = true
+            this.achivements.text = this.getAchivementText()
         }
+
+        if (Object.values(this.props.achivement).every((b) => b)) {
+            this.nextScene = ClearScene
+        }
+    }
+
+    private getAchivementText(): string {
+        return "あちーぶめんと:" + Object.values(this.props.achivement).map((b) => b ? '🏆':'🕳').join("")
     }
 }
