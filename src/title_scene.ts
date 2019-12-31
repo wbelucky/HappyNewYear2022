@@ -61,7 +61,7 @@ export class TitleScene extends Scene {
         this.particles = new Array(100).fill(0).map((_) => {
             const spr = new PIXI.Sprite(this.props.resources['resources/animalface_nezumi.png'].texture)
             spr.anchor.set(0.5)
-            spr.scale.set(Math.random() / 3)
+            spr.scale.set(Math.random() / 3 + 0.1)
             spr.x = Math.random() * gameWidth
             spr.y = Math.random() * gameHeight
             spr.rotation += 2 * Math.PI * Math.random()
@@ -122,7 +122,7 @@ export class TitleScene extends Scene {
             window.open('https://twitter.com/biraki_prg', '_blank')
             this.props.achivement.twitter = true
             this.achivements.text = this.getAchivementText()
-            alert('[実績解除] twitterアイコンを押しました.\nアチーブメントは全部で4つ')
+            alert('[実績解除] twitterアイコンを押しました.')
         })
         icon.anchor.set(0.5)
         icon.position.set(3 * gameWidth / 4, gameHeight / 2)
@@ -141,9 +141,7 @@ export class TitleScene extends Scene {
                 return
             }
             const toPointer = Math.sqrt((spr.x - this.pointerPosition.x) * (spr.x - this.pointerPosition.x) + (spr.y - this.pointerPosition.y) * (spr.y - this.pointerPosition.y))
-            if (toPointer <= gameWidth / 8) {        this.on('pointerout', (evt: any) => {
-                this.pointerPosition = null
-            })
+            if (toPointer <= gameWidth / 8) {
                 switch (this.pointerMode) {
                     case 'cat':
                         spr.x -= (this.pointerPosition.x - spr.x) * 0.03

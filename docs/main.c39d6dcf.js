@@ -43645,7 +43645,7 @@ function (_super) {
     _this.particles = new Array(100).fill(0).map(function (_) {
       var spr = new PIXI.Sprite(_this.props.resources['resources/animalface_nezumi.png'].texture);
       spr.anchor.set(0.5);
-      spr.scale.set(Math.random() / 3);
+      spr.scale.set(Math.random() / 3 + 0.1);
       spr.x = Math.random() * settings_1.gameWidth;
       spr.y = Math.random() * settings_1.gameHeight;
       spr.rotation += 2 * Math.PI * Math.random();
@@ -43711,7 +43711,7 @@ function (_super) {
       window.open('https://twitter.com/biraki_prg', '_blank');
       _this.props.achivement.twitter = true;
       _this.achivements.text = _this.getAchivementText();
-      alert('[実績解除] twitterアイコンを押しました.\nアチーブメントは全部で4つ');
+      alert('[実績解除] twitterアイコンを押しました.');
     });
     icon.anchor.set(0.5);
     icon.position.set(3 * settings_1.gameWidth / 4, settings_1.gameHeight / 2);
@@ -43739,10 +43739,6 @@ function (_super) {
       var toPointer = Math.sqrt((spr.x - _this.pointerPosition.x) * (spr.x - _this.pointerPosition.x) + (spr.y - _this.pointerPosition.y) * (spr.y - _this.pointerPosition.y));
 
       if (toPointer <= settings_1.gameWidth / 8) {
-        _this.on('pointerout', function (evt) {
-          _this.pointerPosition = null;
-        });
-
         switch (_this.pointerMode) {
           case 'cat':
             spr.x -= (_this.pointerPosition.x - spr.x) * 0.03;
@@ -43985,7 +43981,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39915" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42647" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
