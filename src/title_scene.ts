@@ -122,7 +122,7 @@ export class TitleScene extends Scene {
             window.open('https://twitter.com/biraki_prg', '_blank')
             this.props.achivement.twitter = true
             this.achivements.text = this.getAchivementText()
-            alert('[実績解除] twitterアイコンを押しました.\n今年もよろしくなぁ')
+            alert('[実績解除] twitterアイコンを押しました.\nアチーブメントは全部で4つ')
         })
         icon.anchor.set(0.5)
         icon.position.set(3 * gameWidth / 4, gameHeight / 2)
@@ -168,7 +168,7 @@ export class TitleScene extends Scene {
             }
         })
         if (gather_all && !this.props.achivement.gatherAll) {
-            alert("[実績解放]タイトル画面のすべてのネズミを集めました\n今年も良いお年になりますように!!")
+            alert("[実績解放]タイトル画面のすべてのネズミを集めました")
             this.props.achivement.gatherAll = true
             this.achivements.text = this.getAchivementText()
         }
@@ -177,7 +177,7 @@ export class TitleScene extends Scene {
             return (spr.x < 0 || gameWidth <= spr.x) || (spr.y < 0 || gameHeight <= spr.y)
         })
         if (exclude_all && !this.props.achivement.excludeAll) {
-            alert("[実績解放]タイトル画面のすべてのネズミを画面外へ追い出しました\nことよろやで~~")
+            alert("[実績解放]タイトル画面のすべてのネズミを画面外へ追い出しました")
             this.props.achivement.excludeAll = true
             this.achivements.text = this.getAchivementText()
         }

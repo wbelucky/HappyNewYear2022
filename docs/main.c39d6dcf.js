@@ -43374,7 +43374,7 @@ function (_super) {
 
     _this.animals.on("pointerdown", function () {
       _this.props.achivement.gameClear = true;
-      alert('[実績解除] ゲームクリアだ やったねー');
+      alert('[実績解除] ここにゲームシーンを作る予定でした...');
       _this.state = "move_up";
     });
 
@@ -43711,7 +43711,7 @@ function (_super) {
       window.open('https://twitter.com/biraki_prg', '_blank');
       _this.props.achivement.twitter = true;
       _this.achivements.text = _this.getAchivementText();
-      alert('[実績解除] twitterアイコンを押しました.\n今年もよろしくなぁ');
+      alert('[実績解除] twitterアイコンを押しました.\nアチーブメントは全部で4つ');
     });
     icon.anchor.set(0.5);
     icon.position.set(3 * settings_1.gameWidth / 4, settings_1.gameHeight / 2);
@@ -43771,7 +43771,7 @@ function (_super) {
     });
 
     if (gather_all && !this.props.achivement.gatherAll) {
-      alert("[実績解放]タイトル画面のすべてのネズミを集めました\n今年も良いお年になりますように!!");
+      alert("[実績解放]タイトル画面のすべてのネズミを集めました");
       this.props.achivement.gatherAll = true;
       this.achivements.text = this.getAchivementText();
     }
@@ -43781,7 +43781,7 @@ function (_super) {
     });
 
     if (exclude_all && !this.props.achivement.excludeAll) {
-      alert("[実績解放]タイトル画面のすべてのネズミを画面外へ追い出しました\nことよろやで~~");
+      alert("[実績解放]タイトル画面のすべてのネズミを画面外へ追い出しました");
       this.props.achivement.excludeAll = true;
       this.achivements.text = this.getAchivementText();
     }
@@ -43985,7 +43985,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36423" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39915" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

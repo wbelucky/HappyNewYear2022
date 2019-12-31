@@ -18,7 +18,7 @@ export class GameScene extends Scene {
        this.animals.anchor.set(0.5)
        this.animals.on("pointerdown", () => {
            this.props.achivement.gameClear = true
-           alert('[実績解除] ゲームクリアだ やったねー')
+           alert('[実績解除] ここにゲームシーンを作る予定でした...')
            this.state = "move_up"
        })
        this.addChild(this.animals)
