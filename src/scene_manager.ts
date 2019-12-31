@@ -1,12 +1,14 @@
+import * as PIXI from 'pixi.js'
 import { GameScene } from "./game_scene"
 import { Scene } from "./scene"
 import { FrameInfo } from "./scene"
 import { SceneProps } from "./scene"
+import { TitleScene } from "./title_scene"
 
 export class SceneManager {
     private nowScene: Scene
     constructor(private readonly stage: PIXI.Container, private props: SceneProps) {
-        this.nowScene = new GameScene(this.props)
+        this.nowScene = new TitleScene(this.props)
         this.stage.addChild(this.nowScene)
     }
     public update(frameInfo: FrameInfo): void {

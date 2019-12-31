@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { Scene, FrameInfo, ImplementedScene } from "./scene";
-import { SceneProps } from "../scene";
+import { SceneProps } from "./scene";
 import { gameWidth, gameHeight } from './settings';
 
 export class GameScene extends Scene {

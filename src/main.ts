@@ -7,7 +7,7 @@ const main = () => {
     const app = new PIXI.Application({
         width: gameWidth,
         height: gameHeight,
-        backgroundColor: 0xFFFFFF,
+        backgroundColor: 0xffffff,
         resolution: window.devicePixelRatio,
     })
     
@@ -46,12 +46,22 @@ const main = () => {
     }
     document.getElementById("game").appendChild(app.view)
     window.addEventListener("resize", resize, false)
-        resize()
+    resize()
 
-    app.loader.add("resources/animal_dance.png")
+    app.loader.add([
+            "resources/animal_dance.png",
+            "resources/animalface_nezumi.png",
+            'resources/kunsei_cheese.png',
+            'resources/cat_boss_gang.png',
+            'resources/profile.png'
+        ])
         .load((_, resources) => {
             const sceneManager = new SceneManager(app.stage, {
                 resources,
+                achivement: {
+                    excludeAll: false,
+                    gatherAll: false,
+                }
             })
             let frameCount = 0
             app.ticker.add((deltaTimeMS: number) => {
@@ -61,4 +71,23 @@ const main = () => {
         })
 }
 
-main()
+(window as any).WebFontConfig = {
+    custom: { families: ['Nico Moji'],
+                urls: [ 'https://fonts.googleapis.com/earlyaccess/nicomoji.css' ] },
+
+    active() {
+        main();
+    },
+};
+
+/* eslint-disable */
+// include the web-font loader script
+(function() {
+    const wf = document.createElement('script');
+    wf.src = `${document.location.protocol === 'https:' ? 'https' : 'http'
+    }://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js`;
+    wf.type = 'text/javascript';
+    (wf as any).async = 'true';
+    const s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(wf, s);
+}());
