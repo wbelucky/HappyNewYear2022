@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { Achievements } from './achievement';
+import { ClearScene } from './clear_scene';
 import { Scene, FrameInfo, ImplementedScene } from "./scene";
 import { SceneProps } from "./scene";
 import { gameWidth, gameHeight } from './settings';
@@ -113,6 +114,10 @@ export class GameScene extends Scene {
             default:
                 this.animals.rotation += 0.1 * 0.5 * frameInfo.deltaTimeMS
                 break;
+        }
+
+        if (Object.values(this.props.achievement).every((b) => b)) {
+            this.nextScene = ClearScene
         }
     }
 }

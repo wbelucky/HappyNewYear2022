@@ -49143,7 +49143,128 @@ function () {
 }();
 
 exports.Achievements = Achievements;
-},{"pixi.js":"../node_modules/pixi.js/lib/pixi.es.js"}],"game_scene.ts":[function(require,module,exports) {
+},{"pixi.js":"../node_modules/pixi.js/lib/pixi.es.js"}],"clear_scene.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  Object.defineProperty(o, k2, {
+    enumerable: true,
+    get: function get() {
+      return m[k];
+    }
+  });
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
+  Object.defineProperty(o, "default", {
+    enumerable: true,
+    value: v
+  });
+} : function (o, v) {
+  o["default"] = v;
+});
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) {
+    if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+  }
+
+  __setModuleDefault(result, mod);
+
+  return result;
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ClearScene = void 0;
+
+var PIXI = __importStar(require("pixi.js"));
+
+var scene_1 = require("./scene");
+
+var settings_1 = require("./settings");
+
+var ClearScene =
+/** @class */
+function (_super) {
+  __extends(ClearScene, _super);
+
+  function ClearScene(props) {
+    var _this = _super.call(this, props) || this;
+
+    _this.nextScene = null;
+    var elapsedSecond = (new Date().getTime() - props.startTime.getTime()) / 1000;
+    var clear = new PIXI.Text("\u3059\u3079\u3066\u306E\u3042\u3061\u30FC\u3076\u3081\u3093\u3068\u3092\u305F\u3063\u305B\u3044\u3057\u307E\u3057\u305F!!\n  \u3053\u3068\u3057\u3082\u3088\u308D\u3057\u304F!!\uD83C\uDFC6 \n\n\u30D7\u30EC\u30A4\u3058\u304B\u3093: " + elapsedSecond + "s", new PIXI.TextStyle({
+      fontFamily: 'Nico Moji',
+      fontSize: 60
+    }));
+    clear.anchor.set(0.5);
+    clear.position.set(settings_1.gameWidth / 2, settings_1.gameHeight / 3);
+
+    _this.addChild(clear);
+
+    var tweet = new PIXI.Text('ついーとする', new PIXI.TextStyle({
+      fontFamily: 'Nico Moji',
+      fontSize: 40
+    }));
+    tweet.interactive = true;
+    tweet.on('pointertap', function () {
+      var baseUrl = 'https://twitter.com/intent/tweet?';
+      var text = ['text', "\u5E74\u8CC0\u72B62022\u3067\u3059\u3079\u3066\u306E\u30A2\u30C1\u30FC\u30D6\u30E1\u30F3\u30C8\u3092\u9054\u6210\u3057\u307E\u3057\u305F!\n\u30D7\u30EC\u30A4\u6642\u9593: " + elapsedSecond + "s\n"];
+      var hashtags = ['hashtags', ['wbelucky年賀状2022'].join(',')];
+      var url = ['url', location.href];
+      var query = new URLSearchParams([text, hashtags, url]).toString();
+      var shareUrl = "" + baseUrl + query;
+      window.open(shareUrl, '_blank');
+    });
+    tweet.anchor.set(0.5);
+    tweet.position.set(settings_1.gameWidth / 2, settings_1.gameHeight * 2 / 3);
+
+    _this.addChild(tweet);
+
+    return _this;
+  }
+
+  ClearScene.prototype.update = function () {};
+
+  return ClearScene;
+}(scene_1.Scene);
+
+exports.ClearScene = ClearScene;
+},{"pixi.js":"../node_modules/pixi.js/lib/pixi.es.js","./scene":"scene.ts","./settings":"settings.ts"}],"game_scene.ts":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -49214,6 +49335,8 @@ exports.GameScene = void 0;
 var PIXI = __importStar(require("pixi.js"));
 
 var achievement_1 = require("./achievement");
+
+var clear_scene_1 = require("./clear_scene");
 
 var scene_1 = require("./scene");
 
@@ -49354,134 +49477,19 @@ function (_super) {
         this.animals.rotation += 0.1 * 0.5 * frameInfo.deltaTimeMS;
         break;
     }
+
+    if (Object.values(this.props.achievement).every(function (b) {
+      return b;
+    })) {
+      this.nextScene = clear_scene_1.ClearScene;
+    }
   };
 
   return GameScene;
 }(scene_1.Scene);
 
 exports.GameScene = GameScene;
-},{"pixi.js":"../node_modules/pixi.js/lib/pixi.es.js","./achievement":"achievement.ts","./scene":"scene.ts","./settings":"settings.ts","./title_scene":"title_scene.ts"}],"clear_scene.ts":[function(require,module,exports) {
-"use strict";
-
-var __extends = this && this.__extends || function () {
-  var _extendStatics = function extendStatics(d, b) {
-    _extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) {
-        if (b.hasOwnProperty(p)) d[p] = b[p];
-      }
-    };
-
-    return _extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    _extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-
-var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
-  if (k2 === undefined) k2 = k;
-  Object.defineProperty(o, k2, {
-    enumerable: true,
-    get: function get() {
-      return m[k];
-    }
-  });
-} : function (o, m, k, k2) {
-  if (k2 === undefined) k2 = k;
-  o[k2] = m[k];
-});
-
-var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (o, v) {
-  Object.defineProperty(o, "default", {
-    enumerable: true,
-    value: v
-  });
-} : function (o, v) {
-  o["default"] = v;
-});
-
-var __importStar = this && this.__importStar || function (mod) {
-  if (mod && mod.__esModule) return mod;
-  var result = {};
-  if (mod != null) for (var k in mod) {
-    if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-  }
-
-  __setModuleDefault(result, mod);
-
-  return result;
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.ClearScene = void 0;
-
-var PIXI = __importStar(require("pixi.js"));
-
-var scene_1 = require("./scene");
-
-var settings_1 = require("./settings");
-
-var ClearScene =
-/** @class */
-function (_super) {
-  __extends(ClearScene, _super);
-
-  function ClearScene(props) {
-    var _this = _super.call(this, props) || this;
-
-    _this.nextScene = null;
-    var elapsedSecond = (new Date().getTime() - props.startTime.getTime()) / 1000;
-    var clear = new PIXI.Text("\u3059\u3079\u3066\u306E\u3042\u3061\u30FC\u3076\u3081\u3093\u3068\u3092\u305F\u3063\u305B\u3044\u3057\u307E\u3057\u305F!!\n  \u3053\u3068\u3057\u3082\u3088\u308D\u3057\u304F!!\uD83C\uDFC6 \n\n\u30D7\u30EC\u30A4\u3058\u304B\u3093: " + elapsedSecond + "s", new PIXI.TextStyle({
-      fontFamily: 'Nico Moji',
-      fontSize: 60
-    }));
-    clear.anchor.set(0.5);
-    clear.position.set(settings_1.gameWidth / 2, settings_1.gameHeight / 3);
-
-    _this.addChild(clear);
-
-    var tweet = new PIXI.Text('ついーとする', new PIXI.TextStyle({
-      fontFamily: 'Nico Moji',
-      fontSize: 40
-    }));
-    tweet.interactive = true;
-    tweet.on('pointertap', function () {
-      var baseUrl = 'https://twitter.com/intent/tweet?';
-      var text = ['text', "\u5E74\u8CC0\u72B62022\u3067\u3059\u3079\u3066\u306E\u30A2\u30C1\u30FC\u30D6\u30E1\u30F3\u30C8\u3092\u9054\u6210\u3057\u307E\u3057\u305F!\n\u30D7\u30EC\u30A4\u6642\u9593: " + elapsedSecond + "s\n"];
-      var hashtags = ['hashtags', ['wbelucky年賀状2022'].join(',')];
-      var url = ['url', location.href];
-      var query = new URLSearchParams([text, hashtags, url]).toString();
-      var shareUrl = "" + baseUrl + query;
-      window.open(shareUrl, '_blank');
-    });
-    tweet.anchor.set(0.5);
-    tweet.position.set(settings_1.gameWidth / 2, settings_1.gameHeight * 2 / 3);
-
-    _this.addChild(tweet);
-
-    return _this;
-  }
-
-  ClearScene.prototype.update = function () {};
-
-  return ClearScene;
-}(scene_1.Scene);
-
-exports.ClearScene = ClearScene;
-},{"pixi.js":"../node_modules/pixi.js/lib/pixi.es.js","./scene":"scene.ts","./settings":"settings.ts"}],"title_scene.ts":[function(require,module,exports) {
+},{"pixi.js":"../node_modules/pixi.js/lib/pixi.es.js","./achievement":"achievement.ts","./clear_scene":"clear_scene.ts","./scene":"scene.ts","./settings":"settings.ts","./title_scene":"title_scene.ts"}],"title_scene.ts":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -50002,7 +50010,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37171" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34659" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
