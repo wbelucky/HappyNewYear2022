@@ -22,8 +22,8 @@ export class ClearScene extends Scene {
         tweet.interactive = true
         tweet.on('pointertap', () => {
             const baseUrl = 'https://twitter.com/intent/tweet?';
-            const text = ['text', `年賀状2021ですべてのアチーブメントを達成しました!\nプレイ時間: ${elapsedSecond}s\n`];
-            const hashtags = ['hashtags', ['wbelucky年賀状2021'].join(',')];
+            const text = ['text', `年賀状2022ですべてのアチーブメントを達成しました!\nプレイ時間: ${elapsedSecond}s\n`];
+            const hashtags = ['hashtags', ['wbelucky年賀状2022'].join(',')];
             const url = ['url', location.href];
             const query = new URLSearchParams([text, hashtags, url]).toString();
             const shareUrl = `${baseUrl}${query}`;

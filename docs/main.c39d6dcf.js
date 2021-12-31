@@ -49460,8 +49460,8 @@ function (_super) {
     tweet.interactive = true;
     tweet.on('pointertap', function () {
       var baseUrl = 'https://twitter.com/intent/tweet?';
-      var text = ['text', "\u5E74\u8CC0\u72B62021\u3067\u3059\u3079\u3066\u306E\u30A2\u30C1\u30FC\u30D6\u30E1\u30F3\u30C8\u3092\u9054\u6210\u3057\u307E\u3057\u305F!\n\u30D7\u30EC\u30A4\u6642\u9593: " + elapsedSecond + "s\n"];
-      var hashtags = ['hashtags', ['wbelucky年賀状2021'].join(',')];
+      var text = ['text', "\u5E74\u8CC0\u72B62022\u3067\u3059\u3079\u3066\u306E\u30A2\u30C1\u30FC\u30D6\u30E1\u30F3\u30C8\u3092\u9054\u6210\u3057\u307E\u3057\u305F!\n\u30D7\u30EC\u30A4\u6642\u9593: " + elapsedSecond + "s\n"];
+      var hashtags = ['hashtags', ['wbelucky年賀状2022'].join(',')];
       var url = ['url', location.href];
       var query = new URLSearchParams([text, hashtags, url]).toString();
       var shareUrl = "" + baseUrl + query;
@@ -50002,7 +50002,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43503" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37171" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
