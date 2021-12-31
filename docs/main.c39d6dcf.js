@@ -49301,7 +49301,7 @@ function (_super) {
         _this.rabbit.scale.set(_this.rabbitSize);
 
         if (_this.rabbitClickCount == 50) {
-          _this.achievements.handleClear("findRabbit", "虎の威を借る", "'怖いトラ'の招待を暴きました!");
+          _this.achievements.handleClear("findRabbit", "トラの威を借る", "'怖いトラ'の正体を暴きました!");
         }
       });
 
@@ -49444,7 +49444,7 @@ function (_super) {
 
     _this.nextScene = null;
     var elapsedSecond = (new Date().getTime() - props.startTime.getTime()) / 1000;
-    var clear = new PIXI.Text("\u3059\u3079\u3066\u306E\u3042\u3061\u30FC\u3076\u3081\u3093\u3068\u3092\u305F\u3063\u305B\u3044\u3057\u307E\u3057\u305F!!\n  \u3053\u3068\u3057\u3082\u3088\u308D\u3057\u304F!!\uD83C\uDFC6 \n\u30D7\u30EC\u30A4\u3058\u304B\u3093: " + elapsedSecond + "s", new PIXI.TextStyle({
+    var clear = new PIXI.Text("\u3059\u3079\u3066\u306E\u3042\u3061\u30FC\u3076\u3081\u3093\u3068\u3092\u305F\u3063\u305B\u3044\u3057\u307E\u3057\u305F!!\n  \u3053\u3068\u3057\u3082\u3088\u308D\u3057\u304F!!\uD83C\uDFC6 \n\n\u30D7\u30EC\u30A4\u3058\u304B\u3093: " + elapsedSecond + "s", new PIXI.TextStyle({
       fontFamily: 'Nico Moji',
       fontSize: 60
     }));
@@ -50002,7 +50002,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41079" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43503" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
