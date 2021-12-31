@@ -7,7 +7,7 @@ export class ClearScene extends Scene {
     constructor(props: SceneProps) {
         super(props)
         const elapsedSecond = (new Date().getTime() - props.startTime.getTime()) / 1000
-        const clear = new PIXI.Text(`すべてのあちーぶめんとをたっせいしました!!\n  ことしもよろしく!!🏆 \nプレイじかん: ${elapsedSecond}s`, new PIXI.TextStyle({
+        const clear = new PIXI.Text(`すべてのあちーぶめんとをたっせいしました!!\n  ことしもよろしく!!🏆 \n\nプレイじかん: ${elapsedSecond}s`, new PIXI.TextStyle({
             fontFamily: 'Nico Moji',
             fontSize: 60
         }))

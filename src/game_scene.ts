@@ -70,7 +70,7 @@ export class GameScene extends Scene {
                 this.rabbitClickCount++
                 this.rabbit.scale.set(this.rabbitSize)
                 if (this.rabbitClickCount == 50) {
-                    this.achievements.handleClear("findRabbit", "虎の威を借る", "'怖いトラ'の招待を暴きました!")
+                    this.achievements.handleClear("findRabbit", "トラの威を借る", "'怖いトラ'の正体を暴きました!")
                 }
             })
             this.rabbit.anchor.set(0.5)
