@@ -3,14 +3,15 @@ import { SceneManager } from './scene_manager'
 import { gameHeight, gameWidth } from './settings'
 
 const main = () => {
-    
     const app = new PIXI.Application({
         width: gameWidth,
         height: gameHeight,
-        backgroundColor: 0xffffff,
+        backgroundColor: 0xff4444,
+
+        // background: rgb(255, 42, 42);
         resolution: window.devicePixelRatio,
     })
-    
+
     console.log(app.renderer.resolution)
 
     app.renderer.view.id = "pixi-canvas"
@@ -24,7 +25,7 @@ const main = () => {
 
         const ratio = Math.min(
             window.innerWidth / gameWidth,
-            window.innerHeight/ gameHeight
+            window.innerHeight / gameHeight
         )
 
         const newWidth = Math.ceil(gameWidth * ratio)
@@ -49,34 +50,43 @@ const main = () => {
     resize()
 
     app.loader.add([
-            "resources/animal_dance.png",
-            "resources/animalface_nezumi.png",
-            'resources/kunsei_cheese.png',
-            'resources/cat_boss_gang.png',
-            'resources/profile.png',
-            'resources/game_controller.png'
-        ])
+        "resources/animal_dance.png",
+        "resources/eto_tora_banzai.png",
+        'resources/food_niku_katamari.png',
+        'resources/animal_tora.png',
+        'resources/profile-circle.png',
+        'resources/game_controller.png',
+        'resources/rabbit-vim.png',
+        'resources/rabbit-mini.png',
+        'resources/turn-arrow.png'
+    ])
         .load((_, resources) => {
+
+            const startTime = new Date()
             const sceneManager = new SceneManager(app.stage, {
+                startTime,
                 resources,
-                achivement: {
+                achievement: {
                     excludeAll: false,
                     gatherAll: false,
                     twitter: false,
-                    gameClear: false
+                    gameClear: false,
+                    findRabbit: false,
                 }
             })
             let frameCount = 0
             app.ticker.add((deltaTimeMS: number) => {
-                sceneManager.update({deltaTimeMS, frameCount})
-                frameCount ++
+                sceneManager.update({ deltaTimeMS, frameCount })
+                frameCount++
             })
         })
 }
 
 (window as any).WebFontConfig = {
-    custom: { families: ['Nico Moji'],
-                urls: [ 'https://fonts.googleapis.com/earlyaccess/nicomoji.css' ] },
+    custom: {
+        families: ['Nico Moji'],
+        urls: ['https://fonts.googleapis.com/earlyaccess/nicomoji.css']
+    },
 
     active() {
         main();
@@ -85,10 +95,10 @@ const main = () => {
 
 /* eslint-disable */
 // include the web-font loader script
-(function() {
+(function () {
     const wf = document.createElement('script');
     wf.src = `${document.location.protocol === 'https:' ? 'https' : 'http'
-    }://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js`;
+        }://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js`;
     wf.type = 'text/javascript';
     (wf as any).async = 'true';
     const s = document.getElementsByTagName('script')[0];

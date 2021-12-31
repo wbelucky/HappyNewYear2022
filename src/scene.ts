@@ -5,15 +5,17 @@ export interface FrameInfo {
     readonly frameCount: number
 }
 
-export type ImplementedScene = typeof Scene & (new(...args: never[]) => Scene)
+export type ImplementedScene = typeof Scene & (new (...args: never[]) => Scene)
 
 export interface SceneProps {
-    readonly resources: PIXI.IResourceDictionary
-    achivement: {
+    readonly startTime: Date;
+    readonly resources: PIXI.IResourceDictionary;
+    achievement: {
         excludeAll: boolean;
         gatherAll: boolean;
         twitter: boolean;
-        gameClear: boolean
+        gameClear: boolean;
+        findRabbit: boolean;
     }
 }
 
