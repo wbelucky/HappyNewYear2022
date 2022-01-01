@@ -171,7 +171,7 @@ export class TitleScene extends Scene {
         const exclude_all = this.particles.every((spr) => {
             return (spr.x < 0 || gameWidth <= spr.x) || (spr.y < 0 || gameHeight <= spr.y)
         })
-        if (exclude_all && !this.props.achievement.excludeAll) {
+        if (this.pointerMode === 'cat' && exclude_all && !this.props.achievement.excludeAll) {
 
             this.achievements.handleClear("excludeAll", "上下関係", "'怖いトラ'ですべてのトラを画面外へ追い出しました!")
         }

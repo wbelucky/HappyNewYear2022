@@ -33,6 +33,18 @@ export class ClearScene extends Scene {
         tweet.position.set(gameWidth / 2, gameHeight * 2 / 3)
         this.addChild(tweet)
 
+        const writer = "Percentsley"
+        const thanks = new PIXI.Text(`うさぎのえ: @${writer}`, new PIXI.TextStyle({
+            fontFamily: 'Nico Moji',
+            fontSize: 20
+        }))
+        thanks.interactive = true
+        thanks.on('pointertap', () => {
+            window.open(`https://twitter.com/${writer}`, '_blank')
+        })
+        thanks.anchor.set(0.5)
+        thanks.position.set(gameWidth * 3 / 4, gameHeight * 3 / 4)
+        this.addChild(thanks)
 
     }
     public update(): void {
