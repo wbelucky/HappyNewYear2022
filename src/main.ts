@@ -12,7 +12,6 @@ const main = () => {
         resolution: window.devicePixelRatio,
     })
 
-    console.log(app.renderer.resolution)
 
     app.renderer.view.id = "pixi-canvas"
     PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -20,8 +19,6 @@ const main = () => {
     const resize = () => {
 
         // const p = app.view.parentElement
-        console.log(innerWidth)
-        console.log(innerHeight)
 
         const ratio = Math.min(
             window.innerWidth / gameWidth,

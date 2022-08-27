@@ -5,7 +5,6 @@ export class Achievements {
   public readonly sprite: PIXI.Text
 
   constructor(private readonly props: SceneProps) {
-    console.log(props.achievement)
     this.sprite = new PIXI.Text(this.getAchievementText(props.achievement), new PIXI.TextStyle({
       fontFamily: "Nico Moji",
       fontSize: 15
