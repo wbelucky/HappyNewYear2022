@@ -119,7 +119,7 @@ export class TitleScene extends Scene {
         const icon = new PIXI.Sprite(this.props.resources["resources/profile-circle.png"].texture)
         icon.interactive = true
         icon.on('pointerdown', () => {
-            window.open('https://twitter.com/biraki_prg', '_blank')
+            window.open('https://twitter.com/wbelucky', '_blank')
             this.achievements.handleClear("twitter", "twitter", "twitterアイコンを押しました.")
         })
         icon.anchor.set(0.5)
