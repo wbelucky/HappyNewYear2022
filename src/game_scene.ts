@@ -12,7 +12,7 @@ export class GameScene implements Scene {
     private state: 'rotate' | 'move_up' = "rotate"
     private animals: PIXI.Sprite
     private achievements: Achievements
-    private rabbitSize = 0.15
+    private rabbitSize = 0.11
     private rabbitClickCount = 0
     private rabbit: PIXI.Sprite | null = null;
 
