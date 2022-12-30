@@ -1,11 +1,12 @@
 import * as PIXI from 'pixi.js'
-import { Scene, SceneProps, ImplementedScene } from './scene';
+import { Scene, SceneProps } from './scene';
 import { gameWidth, gameHeight } from './settings';
 
-export class ClearScene extends Scene {
-    public nextScene: ImplementedScene | null = null
+export class ClearScene implements Scene {
+    public readonly c = new PIXI.Container();
+    public nextScene: Scene | null = null
+
     constructor(props: SceneProps) {
-        super(props)
         const elapsedSecond = (new Date().getTime() - props.startTime.getTime()) / 1000
         const clear = new PIXI.Text(`すべてのあちーぶめんとをたっせいしました!!\n  ことしもよろしく!!🏆 \n\nプレイじかん: ${elapsedSecond}s`, new PIXI.TextStyle({
             fontFamily: 'Nico Moji',
@@ -13,7 +14,7 @@ export class ClearScene extends Scene {
         }))
         clear.anchor.set(0.5)
         clear.position.set(gameWidth / 2, gameHeight / 3)
-        this.addChild(clear)
+        this.c.addChild(clear)
 
         const tweet = new PIXI.Text('ついーとする', new PIXI.TextStyle({
             fontFamily: 'Nico Moji',
@@ -31,7 +32,7 @@ export class ClearScene extends Scene {
         })
         tweet.anchor.set(0.5)
         tweet.position.set(gameWidth / 2, gameHeight * 2 / 3)
-        this.addChild(tweet)
+        this.c.addChild(tweet)
 
         const writer = "Percentsley"
         const thanks = new PIXI.Text(`うさぎのえ: @${writer}`, new PIXI.TextStyle({
@@ -44,7 +45,7 @@ export class ClearScene extends Scene {
         })
         thanks.anchor.set(0.5)
         thanks.position.set(gameWidth * 3 / 4, gameHeight * 3 / 4)
-        this.addChild(thanks)
+        this.c.addChild(thanks)
 
     }
     public update(): void {

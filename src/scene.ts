@@ -5,11 +5,9 @@ export interface FrameInfo {
     readonly frameCount: number
 }
 
-export type ImplementedScene = typeof Scene & (new (...args: never[]) => Scene)
-
 export interface SceneProps {
     readonly startTime: Date;
-    readonly resources: PIXI.IResourceDictionary;
+    readonly resources: Record<string, PIXI.Texture>;
     achievement: {
         excludeAll: boolean;
         gatherAll: boolean;
@@ -19,10 +17,17 @@ export interface SceneProps {
     }
 }
 
-export abstract class Scene extends PIXI.Container {
-    constructor(props: SceneProps) {
-        super()
-    }
-    public abstract nextScene: ImplementedScene | null
-    public abstract update(frameInfo: FrameInfo): void
+// export abstract class Scene extends PIXI.Container {
+//     constructor(props: SceneProps) {
+//         super()
+//     }
+//     public abstract nextScene: ImplementedScene | null
+//     public abstract update(frameInfo: FrameInfo): void
+// }
+
+export interface Scene {
+  c: PIXI.Container;
+  readonly nextScene: Scene | null;
+  update(frameInfo: FrameInfo): void;
+  onpointermove?: (evt: PIXI.FederatedPointerEvent) => void;
 }

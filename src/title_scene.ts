@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { Scene, ImplementedScene, SceneProps, FrameInfo } from "./scene";
+import { Scene, SceneProps, FrameInfo } from "./scene";
 import { gameWidth, gameHeight } from "./settings";
 import { GameScene } from "./game_scene";
 import { ClearScene } from './clear_scene';
@@ -7,44 +7,38 @@ import { Achievements } from './achievement';
 
 interface OptionParams { direction: number; };
 
-export class TitleScene extends Scene {
+export class TitleScene implements Scene {
 
-    public nextScene: ImplementedScene | null = null;
+    public readonly c: PIXI.Container = new PIXI.Container();
+    public nextScene: Scene | null = null;
     private particleContainer: PIXI.ParticleContainer
     private particles: Array<PIXI.Sprite & OptionParams>
-    private pointerPosition: PIXI.Point | null = null
+    private pointerPosition: {x: number, y: number} | null = null
     private pointerMode: 'cat' | 'cheeze' = 'cat'
     private pointer: PIXI.Sprite
     private achievements: Achievements
     constructor(private props: SceneProps) {
-        super(props)
 
-        this.interactive = true
-        this.sortableChildren = true
-        this.on('pointermove', (evt: any) => {
-            this.pointerPosition = this.toLocal((evt.data.global as PIXI.Point))
-            this.pointerPosition.x -= 20
-            this.pointerPosition.y -= 20
-            this.pointer.visible = true
-            this.pointer.position = this.pointerPosition
-        })
+        this.c.interactive = true
+        this.c.sortableChildren = true
+        // TODO: move to onpointer mvoe
 
-        this.pointer = new PIXI.Sprite(this.props.resources['resources/animal_tora.png'].texture)
+        this.pointer = new PIXI.Sprite(this.props.resources['resources/animal_tora.png'])
         this.pointer.visible = false
         this.pointer.anchor.set(1)
         this.pointer.scale.set(gameWidth / 16 / this.pointer.width)
         this.pointer.alpha = 1
         this.pointer.zIndex = 100
-        this.addChild(this.pointer)
+        this.c.addChild(this.pointer)
         const modeSwitch = () => {
             switch (this.pointerMode) {
                 case 'cat':
                     this.pointerMode = 'cheeze'
-                    this.pointer.texture = this.props.resources['resources/food_niku_katamari.png'].texture
+                    this.pointer.texture = this.props.resources['resources/food_niku_katamari.png']
                     break;
                 case 'cheeze':
                     this.pointerMode = 'cat'
-                    this.pointer.texture = this.props.resources['resources/animal_tora.png'].texture
+                    this.pointer.texture = this.props.resources['resources/animal_tora.png']
                     break;
                 default:
                     break;
@@ -57,10 +51,10 @@ export class TitleScene extends Scene {
             rotation: true,
             uvs: true,
         })
-        this.addChild(this.particleContainer)
+        this.c.addChild(this.particleContainer)
 
         this.particles = new Array(80).fill(0).map((_) => {
-            const spr = new PIXI.Sprite(this.props.resources['resources/eto_tora_banzai.png'].texture)
+            const spr = new PIXI.Sprite(this.props.resources['resources/eto_tora_banzai.png'])
             spr.anchor.set(0.5)
             spr.scale.set(Math.random() / 6 + 0.1)
             spr.x = Math.random() * gameWidth
@@ -82,7 +76,7 @@ export class TitleScene extends Scene {
         }))
         text.anchor.set(0.5, 0.5)
         text.position.set(gameWidth / 3, gameHeight / 2)
-        this.addChild(text)
+        this.c.addChild(text)
 
         const text2 = new PIXI.Text('ことしも よろしく おねがいします', new PIXI.TextStyle({
             fontFamily: "Nico Moji",
@@ -90,7 +84,7 @@ export class TitleScene extends Scene {
         }))
         text2.anchor.set(0.5, 1)
         text2.position.set(gameWidth / 2, gameHeight * 7 / 8)
-        this.addChild(text2)
+        this.c.addChild(text2)
 
         const text3 = new PIXI.Text('がめんをタッチしてみて...', new PIXI.TextStyle({
             fontFamily: "Nico Moji",
@@ -98,12 +92,12 @@ export class TitleScene extends Scene {
         }))
         text3.anchor.set(0.5, 1)
         text3.position.set(gameWidth / 2, gameHeight)
-        this.addChild(text3)
+        this.c.addChild(text3)
 
         this.achievements = new Achievements(this.props)
-        this.addChild(this.achievements.sprite)
+        this.c.addChild(this.achievements.sprite)
 
-        const toGame = new PIXI.Sprite(this.props.resources['resources/turn-arrow.png'].texture)
+        const toGame = new PIXI.Sprite(this.props.resources['resources/turn-arrow.png'])
         toGame.anchor.set(0.5)
         toGame.scale.set(0.2)
         toGame.alpha = 1
@@ -111,12 +105,12 @@ export class TitleScene extends Scene {
         toGame.interactive = true
         toGame.on('pointertap', () => {
             document.body.removeEventListener('pointerdown', modeSwitch)
-            this.nextScene = GameScene
+            this.nextScene = new GameScene(this.props)
         })
-        this.addChild(toGame)
+        this.c.addChild(toGame)
 
 
-        const icon = new PIXI.Sprite(this.props.resources["resources/profile-circle.png"].texture)
+        const icon = new PIXI.Sprite(this.props.resources["resources/profile-circle.png"])
         icon.interactive = true
         icon.on('pointerdown', () => {
             window.open('https://twitter.com/wbelucky', '_blank')
@@ -125,11 +119,17 @@ export class TitleScene extends Scene {
         icon.anchor.set(0.5)
         icon.position.set(3 * gameWidth / 4, gameHeight / 2)
         icon.zIndex = 50
-        this.addChild(icon)
-
-
-
+        this.c.addChild(icon)
     }
+
+    public onpointermove: (evt: PIXI.FederatedPointerEvent) => void = (evt) => {
+      this.pointerPosition = this.c.toLocal((evt.data.global as PIXI.Point))
+      this.pointerPosition.x -= 20
+      this.pointerPosition.y -= 20
+      this.pointer.visible = true
+      this.pointer.position = this.pointerPosition
+    }
+
     public update(frameInfo: FrameInfo): void {
         this.particles.forEach((spr) => {
             spr.rotation += frameInfo.deltaTimeMS * 0.005
@@ -163,6 +163,7 @@ export class TitleScene extends Scene {
             if (toPointer <= gameWidth / 8) {
                 return true
             }
+            return false
         })
         if (gather_all && !this.props.achievement.gatherAll) {
             this.achievements.handleClear("gatherAll", "トラバター", "トラをかき混ぜたらバターになるって話知りませんか?🧈🧈🧈")
@@ -177,7 +178,8 @@ export class TitleScene extends Scene {
         }
 
         if (Object.values(this.props.achievement).every((b) => b)) {
-            this.nextScene = ClearScene
+            this.nextScene = new ClearScene(this.props)
         }
     }
+
 }

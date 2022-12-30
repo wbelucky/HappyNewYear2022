@@ -1,30 +1,29 @@
 import * as PIXI from 'pixi.js'
 import { Achievements } from './achievement';
 import { ClearScene } from './clear_scene';
-import { Scene, FrameInfo, ImplementedScene } from "./scene";
+import { Scene, FrameInfo } from "./scene";
 import { SceneProps } from "./scene";
 import { gameWidth, gameHeight } from './settings';
 import { TitleScene } from './title_scene';
 
-export class GameScene extends Scene {
-    public nextScene: ImplementedScene | null = null;
+export class GameScene implements Scene {
+    public c: PIXI.Container = new PIXI.Container();
+    public nextScene: Scene | null = null;
     private state: 'rotate' | 'move_up' = "rotate"
     private animals: PIXI.Sprite
     private achievements: Achievements
-    private rabbitSize = 0.09
+    private rabbitSize = 0.15
     private rabbitClickCount = 0
     private rabbit: PIXI.Sprite | null = null;
 
     constructor(private props: SceneProps) {
-        super(props);
-        console.log(props)
-        this.interactive = true
-        this.sortableChildren = true
+        this.c.interactive = true
+        this.c.sortableChildren = true
 
         this.achievements = new Achievements(props)
-        this.addChild(this.achievements.sprite)
+        this.c.addChild(this.achievements.sprite)
 
-        this.animals = new PIXI.Sprite(props.resources["resources/animal_dance.png"].texture)
+        this.animals = new PIXI.Sprite(props.resources["resources/animal_dance.png"])
         this.animals.interactive = true
         this.animals.scale.set(200 / this.animals.width)
         this.animals.position.set(gameWidth / 2, gameHeight / 2)
@@ -33,7 +32,7 @@ export class GameScene extends Scene {
             this.achievements.handleClear("gameClear", "裏面発見", "2019年からここに作られるはずだった楽しいミニゲームの進捗はないです....")
             this.state = "move_up"
         })
-        this.addChild(this.animals)
+        this.c.addChild(this.animals)
 
         const mijissou = new PIXI.Text('ここはウラめんです', new PIXI.TextStyle({
             fontFamily: 'Nico Moji',
@@ -41,7 +40,7 @@ export class GameScene extends Scene {
         }))
         mijissou.anchor.set(0.5)
         mijissou.position.set(gameWidth / 2, gameHeight / 3)
-        this.addChild(mijissou)
+        this.c.addChild(mijissou)
 
         const hint = new PIXI.Text('さいしょのがめんのポインターでまわりのトラを......すると...?', new PIXI.TextStyle({
             fontFamily: 'Nico Moji',
@@ -49,7 +48,7 @@ export class GameScene extends Scene {
         }))
         hint.anchor.set(0.5, 1)
         hint.position.set(gameWidth / 2, gameHeight)
-        this.addChild(hint)
+        this.c.addChild(hint)
 
         const back = new PIXI.Text('おもてへ', new PIXI.TextStyle({
             fontFamily: 'Nico Moji',
@@ -59,12 +58,12 @@ export class GameScene extends Scene {
         back.position.set(gameWidth / 2, gameHeight * 2 / 3)
         back.interactive = true
         back.on('pointertap', () => {
-            this.nextScene = TitleScene
+            this.nextScene = new TitleScene(this.props)
         })
-        this.addChild(back)
+        this.c.addChild(back)
 
         if (props.achievement.excludeAll) {
-            this.rabbit = new PIXI.Sprite(props.resources["resources/rabbit-vim.png"].texture)
+            this.rabbit = new PIXI.Sprite(props.resources["resources/rabbit-vim.png"])
             this.rabbit.interactive = true
             this.rabbit.on('pointerdown', () => {
                 this.rabbitSize += this.rabbitSize * 0.015
@@ -79,11 +78,11 @@ export class GameScene extends Scene {
             this.rabbit.zIndex = 40
             this.rabbit.scale.set(this.rabbitSize)
             this.rabbit.anchor.set(0.5, 1)
-            this.addChild(this.rabbit)
+            this.c.addChild(this.rabbit)
         }
 
 
-        const tiger = new PIXI.Sprite(props.resources["resources/animal_tora.png"].texture)
+        const tiger = new PIXI.Sprite(props.resources["resources/animal_tora.png"])
         // tiger.interactive = true tiger.on('pointerdown', () => { // this.achievements.handleClear("gameClear", "TODO:", "")
         //     // this.rabbitSize += this.rabbitSize * 0.1
         //     console.log("tiger")
@@ -92,10 +91,10 @@ export class GameScene extends Scene {
         tiger.position.set(1 * gameWidth / 4, gameHeight * 3 / 4)
         tiger.zIndex = 50
         tiger.scale.set(0.5)
-        this.addChild(tiger)
+        this.c.addChild(tiger)
 
 
-        const miniRabbit = new PIXI.Sprite(this.props.resources["resources/rabbit-mini.png"].texture)
+        const miniRabbit = new PIXI.Sprite(this.props.resources["resources/rabbit-mini.png"])
         miniRabbit.interactive = true
         miniRabbit.on('pointerdown', () => {
         })
@@ -103,7 +102,7 @@ export class GameScene extends Scene {
         miniRabbit.position.set(3 * gameWidth / 4, gameHeight / 2)
         miniRabbit.zIndex = - 50
         miniRabbit.alpha = 0.5
-        this.addChild(miniRabbit)
+        this.c.addChild(miniRabbit)
     }
     public update(frameInfo: FrameInfo): void {
         switch (this.state) {
@@ -117,7 +116,7 @@ export class GameScene extends Scene {
         }
 
         if (Object.values(this.props.achievement).every((b) => b)) {
-            this.nextScene = ClearScene
+            this.nextScene = new ClearScene(this.props)
         }
     }
 }

@@ -2,11 +2,10 @@
   "name": "pixi",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cp -r resources dist && npx parcel src/index.html",
-    "build": "rm -r docs; mkdir -p docs; cp -r resources docs && npx parcel build src/index.html --out-dir docs --public-url . --no-source-maps"
+    "start": "mkdir -p dist && cp -r resources dist && npx parcel src/index.html",
+    "build": "rm -r docs; mkdir -p docs; cp -r resources docs && npx parcel build src/index.html --dist-dir docs --public-url . --no-source-maps"
   },
   "author": "",
   "license": "ISC",
